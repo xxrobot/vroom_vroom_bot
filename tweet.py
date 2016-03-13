@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 import os, sys, math
-import tweepy, config
+import tweepy, config, random
 from random import randint
 
 def get_api(cfg):
@@ -9,13 +9,19 @@ def get_api(cfg):
   auth.set_access_token(cfg['access_token'], cfg['access_token_secret'])
   return tweepy.API(auth)
 
-scenes = ["tropical","american","desert","city"]
+scenes = ["tropical","american","desert","city","ocean","space"]
+# scenes = ["space"]
 trees = { "tropical":["🌴 ","🌱 ","🐢","🦀 ","🌴 ","🌴 ","🌴 ","   ","   ","   ","   ","   ","   ","   ","   ","   ","   ","   "],
           "american":["🌲 ","🌳 ","   ","   ","🐎 ","🌲 ","🌳 ","   ","   ","   ","   ","   ","   ","   ","   ","   ","   "],
           "desert":["🐍 ","🐢 ","🌵 ","🐫 ","🌱 ","🌵 ","🌵 ","   ","   ","   ","   ","   ","   ","   ","   "],
-          "city":["🏠 ","🏡 ","🏚 ","🏢 ","🏬 ","🏣 ","🏤 ","🏥 ","🏦 ","🏨 ","🏪 ","🏫 ","🏩 ","💒 ","🏛 ","⛪ ","🕌 ","🕍 ","🌲 ","🌳 ","   ","   ","   ","   ","   "]}
+          "city":["🏠 ","🏡 ","🏚 ","🏢 ","🏬 ","🏣 ","🏤 ","🏥 ","🏦 ","🏨 ","🏪 ","🏫 ","🏩 ","💒 ","🏛 ","⛪ ","🕌 ","🕍 ","🌲 ","🌳 ","   ","   ","   ","   ","   "],
+          "ocean":["🌊 ","🌊 ","🌊 ","🌊 ","🌊 ","🌊 ","🌊 ","🌊 ","🌊 ","🌊 ","🌊 ","🌊 ","🌊 ","🌊 ","🌊 ","⛵ ","🛥 ","🚤 ","⛴ ","🛳"],
+          "space":["✨ ","✨ ","✨ ","✨ ","✨ ","✨ ","✨ ","✨ ","✨ ","✨ ","🌑 ","🌏 ","🌕 ",
+                  "   ","   ","   ","   ","   ","   ","   ","   ","   ","   ","   ","   ","   ","   ",
+                  "   ","   ","   ","   ","   ","   ","   ","   ","   ","   ","   ","   ","   ","   ",]}
 cars = ["🚎💨","🚌 ","🚗 ","🚕💨 ","🚙 ","🚌 ","🚎 ","🏎 ","🚓 ","🚑 ","🚒 ","🚐 ","🚚 ","🚛 ","🚜 ","🏍 ","🚲 ","🚕",
         "   ","   ","   ","   ","   ","   ","   ","   "]
+spaceships = ["🚀  ","🛰  ", "   ", "   ", "   ", "   ", "   ", "   "]        
 sky = ["🌞 ","🌤 ","⛅ ","☁"]
 
 def setScene():
@@ -32,17 +38,29 @@ def getTrees():
   return trees[scene][randInt]
 
 def getSky():
-  randInt = randint(0,int(len(sky)-1))
-  return sky[randInt]
+  if scene == "space":
+    return random.choice(trees['space'])
+  else:
+    return random.choice(sky)
 
 def getCars():
   randInt = randint(0,int(len(cars)-1))
-  return cars[randInt]
+  if scene == "space":
+    return random.choice(spaceships)
+  else:
+    return random.choice(cars)
 
 
 setScene()
 
-tweet = getTrees() + getTrees() + getSky() + getTrees() + getTrees() + getTrees() + getTrees() + getTrees() + "\n" +\
+if scene == "ocean":
+  tweet = "🌊 🌊 🌊 🌊 🌊 🌊 🌊 🌊 " + "\n" +\
+        "🌊 " + getTrees() + getTrees() + getTrees() + getTrees() + getTrees() + getTrees() + "🌊" + "\n" +\
+        "🌊 " + getTrees() + getTrees() + getTrees() + getTrees() + getTrees() + getTrees() + "🌊" + "\n" +\
+        "🌊 " + getTrees() + getTrees() + getTrees() + getTrees() + getTrees() + getTrees() + "🌊" + "\n" +\
+        "🌊 🌊 🌊 🌊 🌊 🌊 🌊 🌊 " + "\n"
+else:
+  tweet = getTrees() + getTrees() + getSky() + getTrees() + getTrees() + getTrees() + getTrees() + getTrees() + "\n" +\
         getTrees() + getTrees() + getTrees() + getTrees() + getTrees() + getTrees() + getTrees() + getTrees() + "\n" +\
         getCars() +  getCars() + getCars() + getCars() + getCars() + getCars() + getCars() + getCars() + "\n" +\
         getTrees() + getTrees() + getTrees() + getTrees() + getTrees() + getTrees() + getTrees() + getTrees() + "\n" +\
